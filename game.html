@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet " href="tech.css ">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+</head>
+<body>
+    <div class="wrapper">
+        <h1>Tech Hangman</h1>
+        
+         <p>Guess the word commonly used in Technology </p>
+         <div id=clock><h2>Time:0</h2></div>
+         <div class="wrapper">
+         <p id="catagoryName"></p>
+       
+         <div id="mylives">LIVES</div>
+         <div id="hold">
+        </div>
+        <br><br>
+         <div class="container">
+         </div>
+     </div>
+    </div>
+
+         <div class="wrapper">
+          <div id="buttons">
+          </div>  
+          <p id="catagoryName"></p>
+          <div id="hold">
+          </div>
+        
+   
+          <div class="container">
+          </div>
+      </div>
+     </div>
+    
+</body>
+<script>
+    window.onload = function () {
+
+var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+      'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+      't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+var categories;         
+var chosenCategory;    
+var word ;              
+var guess ;             
+var geusses = [ ];      
+var lives ;             
+var counter ;           
+var space;             
+
+var score = 0;
+var sec = 0;
+var time;
+var f = 0;
+
+function timer() {
+  f = 1;
+            time = setInterval(() => {
+                timer()
+            }, 1000);
+            if (sec == 100) {
+                stop();
+            }
+            if (f == 1) {
+                sec++;
+                document.getElementById("clock").innerHTML = "Time:" + sec;
+            }
+          }
+
+var showLives = document.getElementById("mylives");
+var showCatagory = document.getElementById("scatagory");
+
+var buttons = function () {
+    myButtons = document.getElementById('buttons');
+    letters = document.createElement('ul');
+
+    for (var i = 0; i < alphabet.length; i++) {
+      letters.id = 'alphabet';
+      list = document.createElement('li');
+      list.id = 'letter';
+      list.innerHTML = alphabet[i];
+      check();
+      myButtons.appendChild(letters);
+      letters.appendChild(list);
+    }
+  }
+
+result = function () {
+    wordHolder = document.getElementById('hold');
+    correct = document.createElement('ul');
+
+    for (var i = 0; i < word.length; i++) {
+      correct.setAttribute('id', 'my-word');
+      guess = document.createElement('li');
+      guess.setAttribute('class', 'guess');
+      if (word[i] === "-") {
+        guess.innerHTML = "-";
+        space = 1;
+      } else {
+        guess.innerHTML = "_";
+      }
+
+      geusses.push(guess);
+      wordHolder.appendChild(correct);
+      correct.appendChild(guess);
+    }
+  }
+
+
+
+  comments = function () {
+    showLives.innerHTML = "LIVES:"+lives ;
+    if (lives < 1) {
+     alert ("Game Over!! You Lost!! The word was "+ word);
+    }
+    for (var i = 0; i < geusses.length; i++) {
+      if (counter + space === geusses.length) {
+     
+        alert("Congrats!! You scored "+lives*10+" points.You took "+time+" seconds.");
+      }
+    }
+  }
+
+  check = function () {
+    list.onclick = function () {
+      var geuss = (this.innerHTML);
+      this.setAttribute("class", "active");
+      this.onclick = null;
+      for (var i = 0; i < word.length; i++) {
+        if (word[i] === geuss) {
+          geusses[i].innerHTML = geuss;
+          counter += 1;
+        } 
+      }
+      var j = (word.indexOf(geuss));
+      if (j === -1) {
+        lives -= 1;
+        comments();
+      } else {
+        comments();
+      }
+    }
+  }
+
+  play = function () {
+    categories = [
+        ["python","android","react","software","angular","script","keyboard","server","browser","network","router","linux","windows","javascript","mysql","database","memory","download","version","github","protocol","algorithm","object","class","function"]
+    ];
+
+    chosenCategory = categories[Math.floor(Math.random() * categories.length)];
+    word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+    word = word.replace(/\s/g, "-");
+    console.log(word);
+    buttons();
+
+    geusses = [ ];
+    lives = 10;
+    counter = 0;
+    space = 0;
+    result();
+    comments();
+  
+  }
+
+  play();
+}
+</script>
+</html>
